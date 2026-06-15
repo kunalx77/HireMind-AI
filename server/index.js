@@ -13,7 +13,7 @@ dotenv.config()
 const app = express()
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://hiremind-ai-client.onrender.com",
     credentials: true
 }))
 
