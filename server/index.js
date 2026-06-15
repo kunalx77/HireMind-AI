@@ -16,6 +16,9 @@ app.use(cors({
     origin: "https://hiremind-ai-client.onrender.com",
     credentials: true
 }))
+app.get("/api", (req, res) => {
+  res.json({ message: "API working 🚀" });
+});
 
 app.use(express.json())
 app.use(cookieParser())
