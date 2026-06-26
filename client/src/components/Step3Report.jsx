@@ -69,7 +69,7 @@ function Step3Report({ report }) {
     doc.roundedRect(margin, currentY, contentWidth, 20, 4, 4, "F");
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
-    doc.text(`Final Score: ${finalScore}/10`,
+doc.text(`Final Score: ${Number(finalScore).toFixed(2)}/10`,
       pageWidth / 2,
       currentY + 12,
       { align: "center" }
@@ -79,9 +79,9 @@ function Step3Report({ report }) {
     doc.setFillColor(249, 250, 251);
     doc.roundedRect(margin, currentY, contentWidth, 30, 4, 4, "F");
     doc.setFontSize(12);
-    doc.text(`Confidence: ${confidence}`, margin + 10, currentY + 10);
-    doc.text(`Communication: ${communication}`, margin + 10, currentY + 18);
-    doc.text(`Correctness: ${correctness}`, margin + 10, currentY + 26);
+    doc.text(`Confidence: ${Number(confidence).toFixed(2)}`, margin + 10, currentY + 10);
+doc.text(`Communication: ${Number(communication).toFixed(2)}`, margin + 10, currentY + 18);
+doc.text(`Correctness: ${Number(correctness).toFixed(2)}`, margin + 10, currentY + 26);
     currentY += 45;
     //ADVICE
     let advice = "";
@@ -112,7 +112,7 @@ function Step3Report({ report }) {
       body: questionWiseScore.map((q, i) => [
         `${i + 1}`,
         q.question,
-        `${q.score}/10`,
+        `${Number(q.score).toFixed(2)}/10`,
         q.feedback,
       ]),
       styles: {
@@ -172,7 +172,7 @@ function Step3Report({ report }) {
             </h3>
             <div className='relative w-20 h-20 sm:w-25 sm:h-25 mx-auto'>
               <CircularProgressbar
-                value={percentage} text={`${score}/10`}
+                value={percentage}  text={`${Number(score).toFixed(2)}/10`}
                 styles={buildStyles({
                   textSize: "18px",
                   pathColor: "#10b981",
@@ -203,7 +203,7 @@ function Step3Report({ report }) {
                   <div key={i}>
                     <div className='flex justify-between mb-2 text-sm sm:text-base'>
                       <span>{s.label}</span>
-                      <span className='font-semibold text-green-600'>{s.value}</span>
+                      <span className='font-semibold text-green-600'> {Number(s.value).toFixed(2)}</span>
                     </div>
                     <div className='bg-gray-200 h-2 sm:h-3 rounded-full'>
                       <div className='bg-green-500 h-full rounded-full'
@@ -230,7 +230,9 @@ function Step3Report({ report }) {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis domain={[0, 10]} />
-                  <Tooltip />
+                  <Tooltip
+  formatter={(value) => Number(value).toFixed(2)}
+/>
                   <Area type="monotone"
                     dataKey="score"
                     stroke='#22c55e'
@@ -260,7 +262,7 @@ function Step3Report({ report }) {
                       </p>
                     </div>
                     <div className='bg-green-100 text-green-600 px-3 py-1 rounded-full font-bold text-xs sm:text-sm w-fit'>
-                      {q.score ?? 0}/10
+                      {Number(q.score ?? 0).toFixed(2)}/10
                     </div>
                   </div>
                   <div className='bg-green-50 border border-green-200 p-4 rounded-lg'>
