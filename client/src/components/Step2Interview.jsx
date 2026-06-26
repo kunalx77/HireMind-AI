@@ -146,29 +146,64 @@ function Step2Interview({ interviewData, onFinish }) {
     }
   }, [currentIndex]);
   useEffect(() => {
-    if (!("webkitSpeechRecognition" in window)) return;
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.onresult = (event) => {
-      const transcript = event.results[event.results.length - 1][0].transcript;
-      setAnswer((prev) => prev + " " + transcript);
-    };
-    recognitionRef.current = recognition;
-  }, []);
-  const startMic = () => {
-    if (recognitionRef.current && !isAiPlaying) {
+  if (!("webkitSpeechRecognition" in window)) return;
+
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  recognition.onresult = (event) => {
+    const transcript =
+      event.results[event.results.length - 1][0].transcript;
+
+    setAnswer((prev) => prev + " " + transcript);
+  };
+
+  recognition.onerror = (event) => {
+    console.log("Speech recognition error:", event.error);
+  };
+
+  recognition.onend = () => {
+    // IMPORTANT: restart only when allowed
+    if (recognitionRef.current && isMicOn && !isAiPlaying) {
       try {
-        recognitionRef.current.start();
-      } catch { }
+        recognition.start();
+      } catch (e) {
+        console.log("restart failed:", e);
+      }
     }
   };
+
+  recognitionRef.current = recognition;
+
+  return () => {
+    recognition.stop();
+  };
+}, [isMicOn, isAiPlaying]);
+  const startMic = () => {
+  if (!recognitionRef.current) return;
+  if (isAiPlaying) return;
+
+  try {
+    recognitionRef.current.start();
+  } catch (e) {
+    console.log("startMic error:", e);
+  }
+};
   const stopMic = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
+  if (!recognitionRef.current) return;
+
+  try {
+    recognitionRef.current.stop();
+  } catch (e) {
+    console.log(e);
+  }
+};
   const toggleMic = () => {
     if (isMicOn) {
       stopMic();
