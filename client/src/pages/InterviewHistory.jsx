@@ -66,7 +66,7 @@ function InterviewHistory() {
                     {/*SCORE */}
                     <div className='text-right'>
                       <p className='text-xl font-bold text-emerald-600'>
-                        {item.finalScore || 0}/10
+                        {Number(item.finalScore || 0).toFixed(2)}/10
                       </p>
                       <p className='text-xs text-gray-400'>
                         Overall Score
