@@ -185,15 +185,16 @@ function Step2Interview({ interviewData, onFinish }) {
     recognition.stop();
   };
 }, [isMicOn, isAiPlaying]);
-  const startMic = () => {
-  if (!recognitionRef.current) return;
-  if (isAiPlaying) return;
+ const startMic = () => {
+  console.log("MIC START CLICKED");
 
-  try {
-    recognitionRef.current.start();
-  } catch (e) {
-    console.log("startMic error:", e);
+  if (!recognitionRef.current) {
+    console.log("NO RECOGNITION INSTANCE");
+    return;
   }
+
+  console.log("STARTING RECOGNITION...");
+  recognitionRef.current.start();
 };
   const stopMic = () => {
   if (!recognitionRef.current) return;
